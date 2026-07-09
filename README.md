@@ -1,6 +1,6 @@
-# Intercom Chat Summarizer Firefox Extension
+# Intercom Chat Summarizer Extension (Firefox & Google Chrome)
 
-A WebExtensions (Manifest V3) browser extension for Firefox designed to extract chat histories from `enterprise.app.intercom.com`, handle lazy-loaded messaging lists by automatically scrolling, and generate clean, formatted summaries using the Google Gemini API.
+A WebExtensions (Manifest V3) browser extension for Firefox and Google Chrome designed to extract chat histories from `enterprise.app.intercom.com`, handle lazy-loaded messaging lists by automatically scrolling, and generate clean, formatted summaries using the Google Gemini API.
 
 ---
 
@@ -26,15 +26,23 @@ A WebExtensions (Manifest V3) browser extension for Firefox designed to extract 
 
 ## 🛠️ How to Install (For Development / Testing)
 
-Since this extension is unpacked, you can load it temporarily in Firefox:
+Since this extension is unpacked, you can load it temporarily in your browser:
 
+### For Google Chrome
 1. Download or clone this repository to your local machine.
-2. Open Firefox and type `about:debugging` in the address bar, then press **Enter**.
+2. Open Chrome and navigate to `chrome://extensions/`.
+3. Enable **Developer mode** using the toggle switch in the top-right corner.
+4. Click the **Load unpacked** button in the top-left corner.
+5. Select the `intercom-summarizer` folder (containing `manifest.json`).
+
+### For Firefox
+1. Download or clone this repository to your local machine.
+2. Open Firefox and navigate to `about:debugging`.
 3. Click on **This Firefox** in the left menu.
 4. Click the **Load Temporary Add-on...** button.
 5. Select the **`manifest.json`** file inside this folder.
 
-*Note: Temporary add-ons are removed when Firefox restarts. To share permanently with your team, see the **Team Sharing** section below.*
+*Note: In Firefox, temporary add-ons are removed when Firefox restarts. To share permanently with your team, see the **Team Sharing** section below.*
 
 ---
 
