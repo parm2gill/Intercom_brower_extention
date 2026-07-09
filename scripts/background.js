@@ -59,8 +59,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
 
         const apiKey = settings.geminiApiKey;
-        // Default to gemini-2.5-flash if not configured
-        const model = settings.geminiModel || 'gemini-2.5-flash';
+        // Default to gemini-3.5-flash if not configured. Migrate older deprecated models.
+        let model = settings.geminiModel || 'gemini-3.5-flash';
+        if (model === 'gemini-2.5-flash' || model === 'gemini-1.5-flash') {
+          model = 'gemini-3.5-flash';
+        } else if (model === 'gemini-1.5-pro') {
+          model = 'gemini-3.5-pro';
+        }
 
         if (!apiKey) {
           throw new Error('Gemini API key is not configured. Please open Settings.');
