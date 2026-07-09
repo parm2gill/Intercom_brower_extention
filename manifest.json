@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Intercom Chat Summarizer",
+  "version": "1.0",
+  "description": "Summarizes Intercom chats using Google Gemini API",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://*.intercom.com/*",
+    "https://generativelanguage.googleapis.com/*"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": "icons/icon.svg"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "scripts": ["scripts/background.js"]
+  }
+}

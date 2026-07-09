@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Intercom Chat Summarizer</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <header>
+      <h3>Intercom Summarizer</h3>
+      <a href="#" id="settingsLink" title="Configure Settings">⚙️ Settings</a>
+    </header>
+
+    <div class="content">
+      <div id="noKeyWarning" class="warning" style="display: none;">
+        Please configure your Gemini API Key in <a href="#" id="warningSettingsLink">Settings</a> first.
+      </div>
+
+      <div class="actions">
+        <button id="summarizeBtn">Summarize Chat</button>
+      </div>
+
+      <div id="status" class="status-msg">Ready</div>
+
+      <div class="result-area">
+        <textarea id="resultText" readonly placeholder="Your summary will appear here..."></textarea>
+        <button id="copyBtn" disabled>Copy Summary</button>
+      </div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
