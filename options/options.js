@@ -12,7 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
       apiKeyInput.value = result.geminiApiKey;
     }
     if (result.geminiModel) {
-      modelSelect.value = result.geminiModel;
+      let model = result.geminiModel;
+      if (model === 'gemini-2.5-flash' || model === 'gemini-1.5-flash') {
+        model = 'gemini-3.5-flash';
+      } else if (model === 'gemini-1.5-pro') {
+        model = 'gemini-3.5-pro';
+      }
+      modelSelect.value = model;
     }
   });
 
