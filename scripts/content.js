@@ -87,16 +87,17 @@ function findRightSidebar() {
 
 /**
  * Scrolls the chat container to the top iteratively to load lazy-loaded messages.
+ * Optimized for long chats and slower network pagination speeds.
  */
 async function scrollChatToTop(container) {
   return new Promise((resolve) => {
     let lastScrollHeight = container.scrollHeight;
     let sameHeightCount = 0;
-    let maxAttempts = 15; // Safeguard against infinite loops
+    let maxAttempts = 60; // Support extremely long chats (up to 60 lazy-load pages!)
     let attempts = 0;
 
     const timer = setInterval(() => {
-      container.scrollTop = 0;
+      container.scrollTop = 0; // Scroll up
       attempts++;
 
       setTimeout(() => {
@@ -104,7 +105,8 @@ async function scrollChatToTop(container) {
         
         if (currentScrollHeight === lastScrollHeight) {
           sameHeightCount++;
-          if (sameHeightCount >= 3 || attempts >= maxAttempts) {
+          // Require 5 consecutive ticks with no height change to ensure true top (prevents early stopping on slow network responses)
+          if (sameHeightCount >= 5 || attempts >= maxAttempts) {
             clearInterval(timer);
             resolve();
           }
@@ -112,8 +114,8 @@ async function scrollChatToTop(container) {
           sameHeightCount = 0;
           lastScrollHeight = currentScrollHeight;
         }
-      }, 300);
-    }, 500);
+      }, 400); // 400ms check delay after scroll
+    }, 700); // 700ms scroll intervals to allow React/network fetching to catch up
   });
 }
 
