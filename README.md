@@ -11,8 +11,8 @@ A WebExtensions (Manifest V3) browser extension for Firefox and Google Chrome de
 - **Google Gemini Integration**: Uses Gemini Models (e.g. `gemini-2.5-flash` or `gemini-1.5-pro`) to summarize conversations.
 - **Strict Target Layout**: Produces clean summaries following a specific plaintext template:
   ```text
-  Session ID: 77971dc2-2eb7-4581-876d-cadc75637868 (Koala 2122)
-  SKU: EX188V4K
+  Session ID: 77971xxxxxxxxxxxxxxxxxxxx--------xxxxxxxxx (Koala 21xx)
+  SKU: EX100V4K
 
   Issue: Proctor reported the exam status was stuck on "Setting up" 11 minutes before the start time.
 
