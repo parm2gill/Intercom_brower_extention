@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const resultText = document.getElementById('resultText');
   const copyBtn = document.getElementById('copyBtn');
 
-  const storage = typeof chrome !== 'undefined' && chrome.storage ? chrome.storage.local : browser.storage.local;
+  const storage = typeof chrome !== 'undefined' && chrome.storage ? (chrome.storage.sync || chrome.storage.local) : (browser.storage.sync || browser.storage.local);
   const runtime = typeof chrome !== 'undefined' && chrome.runtime ? chrome.runtime : browser.runtime;
   const tabs = typeof chrome !== 'undefined' && chrome.tabs ? chrome.tabs : browser.tabs;
 

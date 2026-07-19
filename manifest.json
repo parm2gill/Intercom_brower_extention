@@ -23,5 +23,10 @@
   "background": {
     "scripts": ["scripts/background.js"],
     "service_worker": "scripts/background.js"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "intercom-summarizer@parm2gill.github.io"
+    }
   }
 }

@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveBtn = document.getElementById('saveBtn');
   const statusDiv = document.getElementById('status');
 
-  const storage = typeof chrome !== 'undefined' && chrome.storage ? chrome.storage.local : browser.storage.local;
+  const storage = typeof chrome !== 'undefined' && chrome.storage ? (chrome.storage.sync || chrome.storage.local) : (browser.storage.sync || browser.storage.local);
 
   // Load saved settings
   storage.get(['geminiApiKey', 'geminiModel'], (result) => {

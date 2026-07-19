@@ -53,7 +53,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
         // 3. Get Gemini settings from storage
         const settings = await new Promise((resolve) => {
-          chrome.storage.local.get(['geminiApiKey', 'geminiModel'], (result) => {
+          const storage = chrome.storage.sync || chrome.storage.local;
+          storage.get(['geminiApiKey', 'geminiModel'], (result) => {
             resolve(result);
           });
         });
