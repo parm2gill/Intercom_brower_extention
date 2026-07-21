@@ -1,6 +1,53 @@
 // Background Script for Intercom Chat Summarizer
 
+// Load configuration containing the encrypted API key if present
+try {
+  importScripts('config.js');
+} catch (e) {
+  // config.js doesn't exist locally during development, which is fine
+}
+
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
+
+/**
+ * Decrypts a 256-bit AES-GCM encrypted API key using a password.
+ */
+async function decryptAPIKey(encryptedBase64, password) {
+  try {
+    const enc = new TextEncoder();
+    
+    // Hash password to get a 256-bit AES key
+    const pwHash = await crypto.subtle.digest('SHA-256', enc.encode(password));
+    
+    // Decode base64
+    const rawData = atob(encryptedBase64);
+    const rawBytes = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; i++) {
+      rawBytes[i] = rawData.charCodeAt(i);
+    }
+    
+    const iv = rawBytes.slice(0, 12);
+    const ciphertext = rawBytes.slice(12);
+    
+    const aesKey = await crypto.subtle.importKey(
+      'raw',
+      pwHash,
+      { name: 'AES-GCM' },
+      false,
+      ['decrypt']
+    );
+    
+    const decryptedBuffer = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv: iv },
+      aesKey,
+      ciphertext
+    );
+    
+    return new TextDecoder().decode(decryptedBuffer);
+  } catch (err) {
+    throw new Error('Incorrect team password.');
+  }
+}
 
 /**
  * Dynamically injects the content script into the specified tab if not already present.
@@ -59,7 +106,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           });
         });
 
-        const apiKey = settings.geminiApiKey;
+        let apiKey = settings.geminiApiKey;
+        
+        // Check if settings.geminiApiKey is a team password (doesn't start with Gemini's 'AIzaSy')
+        if (apiKey && !apiKey.startsWith('AIzaSy')) {
+          // It's a password! Let's attempt to decrypt the ENCRYPTED_API_KEY from config.js
+          if (typeof self.ENCRYPTED_API_KEY !== 'undefined') {
+            try {
+              apiKey = await decryptAPIKey(self.ENCRYPTED_API_KEY, apiKey);
+            } catch (err) {
+              throw new Error('Incorrect Team Password. Please check your settings.');
+            }
+          } else {
+            throw new Error('Shared API key configuration (config.js) not found. Please enter your own Gemini API key.');
+          }
+        }
+
         // Default to gemini-3.5-flash if not configured. Migrate older deprecated models.
         let model = settings.geminiModel || 'gemini-3.5-flash';
         if (model === 'gemini-2.5-flash' || model === 'gemini-1.5-flash') {
@@ -69,7 +131,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
 
         if (!apiKey) {
-          throw new Error('Gemini API key is not configured. Please open Settings.');
+          throw new Error('Gemini API key or Team Password is not configured. Please open Settings.');
         }
 
         // 4. Construct prompt for Gemini
