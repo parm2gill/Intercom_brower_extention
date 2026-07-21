@@ -2,9 +2,13 @@
 
 // Load configuration containing the encrypted API key if present
 try {
-  importScripts('config.js');
-} catch (e) {
-  // config.js doesn't exist locally during development, which is fine
+  importScripts('/scripts/config.js');
+} catch (e1) {
+  try {
+    importScripts('config.js');
+  } catch (e2) {
+    // Both failed, config.js is either missing or has a syntax error
+  }
 }
 
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
